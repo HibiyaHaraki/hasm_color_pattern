@@ -1,0 +1,17 @@
+{
+  "name": "@hasm/color-patterns",
+  "version": "0.1.0",
+  "description": "Shared HASM color pattern definitions and helpers",
+  "type": "module",
+  "main": "./src/index.js",
+  "exports": {
+    ".": "./src/index.js"
+  },
+  "files": [
+    "src"
+  ],
+  "scripts": {
+    "check": "node ./examples/hasm-usage.js && node ./examples/hasm_markdown-usage.js"
+  },
+  "license": "MIT"
+}
