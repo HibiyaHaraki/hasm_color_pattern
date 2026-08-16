@@ -2,6 +2,15 @@
 
 Shared color pattern definitions and helpers for both hasm and hasm_markdown.
 
+## Project Status
+
+This package is public and currently developed as a solo project. Contributions
+are not being accepted yet while the API and patterns are still taking shape.
+Please read [CONTRIBUTING.md](CONTRIBUTING.md) before opening a pull request or
+feature issue.
+
+The package is released under the [MIT License](LICENSE).
+
 ## Purpose
 
 Single source of truth for selectable color patterns.
