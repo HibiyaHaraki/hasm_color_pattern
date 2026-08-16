@@ -1,0 +1,27 @@
+name: Verify Generated Index HTML
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  verify-index-html:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Regenerate index.html
+        run: python scripts/generate-index-html.py
+
+      - name: Verify all patterns are embedded
+        run: python scripts/verify-index-html.py
+
+      - name: Fail if index.html is outdated
+        run: git diff --exit-code -- index.html

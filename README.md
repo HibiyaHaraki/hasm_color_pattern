@@ -66,6 +66,13 @@ If the submodule location differs, adjust the relative path.
 | `midnight` | Midnight | Midnight Navy |
 | `royal` | Royal | Royal |
 | `high-contrast` | High Contrast | High Contrast |
+| `classic-light` | Classic Light | Classic Light |
+| `sunrise-light` | Sunrise Light | Sunrise Light |
+| `forest-light` | Forest Light | Forest Light |
+| `ocean-light` | Ocean Light | Ocean Light |
+| `slate-light` | Slate Light | Slate Light |
+| `royal-light` | Royal Light | Royal Light |
+| `high-contrast-light` | High Contrast Light | High Contrast Light |
 
 ---
 
