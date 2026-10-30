@@ -11,6 +11,29 @@ function hexToRgb(hexColor) {
   };
 }
 
+function getRelativeLuminance(hexColor) {
+  const { r, g, b } = hexToRgb(hexColor);
+  const channels = [r, g, b].map((value) => {
+    const channel = value / 255;
+    return channel <= 0.04045 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4;
+  });
+  return (0.2126 * channels[0]) + (0.7152 * channels[1]) + (0.0722 * channels[2]);
+}
+
+function getContrastRatio(firstColor, secondColor) {
+  const first = getRelativeLuminance(firstColor);
+  const second = getRelativeLuminance(secondColor);
+  const lighter = Math.max(first, second);
+  const darker = Math.min(first, second);
+  return (lighter + 0.05) / (darker + 0.05);
+}
+
+function getOnAccentColor(backgroundColor) {
+  return getContrastRatio("#ffffff", backgroundColor) >= getContrastRatio("#000000", backgroundColor)
+    ? "#ffffff"
+    : "#000000";
+}
+
 function toRgba(hexColor, alpha) {
   const { r, g, b } = hexToRgb(hexColor);
   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
@@ -31,6 +54,7 @@ function createThemeColors(mainColor, textColor, textBackgroundColor, overrides 
     mainColor,
     textColor,
     textBackgroundColor,
+    onAccentColor: overrides.onAccentColor ?? getOnAccentColor(mainColor),
     secondaryColor,
     surfaceColor: overrides.surfaceColor ?? textBackgroundColor,
     mutedColor: overrides.mutedColor ?? toRgba(textColor, 0.74),
@@ -86,6 +110,7 @@ export function getThemeVariables(patternId, fallbackId = DEFAULT_COLOR_PATTERN)
     "--theme-secondary": colors.secondaryColor,
     "--theme-surface": colors.surfaceColor,
     "--theme-text": colors.textColor,
+    "--theme-on-accent": colors.onAccentColor,
     "--theme-muted": colors.mutedColor,
     "--theme-border": colors.borderColor,
     "--theme-soft": colors.softColor,
@@ -103,7 +128,8 @@ export function getMarkdownThemeVariables(patternId, fallbackId = DEFAULT_COLOR_
   return {
     "--main-color": colors.mainColor,
     "--text-color": colors.textColor,
-    "--textbackground-color": colors.textBackgroundColor
+    "--textbackground-color": colors.textBackgroundColor,
+    "--theme-on-accent": colors.onAccentColor
   };
 }
 

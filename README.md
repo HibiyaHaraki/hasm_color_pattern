@@ -107,16 +107,17 @@ import { getThemeVariables } from "@hasm/color-patterns";
 
 const vars = getThemeVariables("ocean");
 // {
-//   "--theme-primary":        "#0a4f73",
+//   "--theme-primary":        "#0369a1",
 //   "--theme-secondary":      "#...",
 //   "--theme-surface":        "#...",
-//   "--theme-text":           "#d8f3ff",
+//   "--theme-text":           "#f0f9ff",
+//   "--theme-on-accent":      "#ffffff",
 //   "--theme-muted":          "rgba(...)",
 //   "--theme-border":         "rgba(...)",
 //   "--theme-soft":           "rgba(...)",
-//   "--theme-textbackground": "#0c1f2a",
+//   "--theme-textbackground": "#0b1720",
 //   "--theme-input-bg":       "rgba(...)",
-//   "--theme-input-text":     "#d8f3ff",
+//   "--theme-input-text":     "#f0f9ff",
 //   "--theme-success":        "#...",
 //   "--theme-danger":         "#..."
 // }
@@ -135,16 +136,17 @@ const vars = getThemeVariables("unknown-id", "midnight");
 
 ### 4. Generate CSS for a markdown renderer
 
-`getMarkdownThemeVariables` returns only the three variables consumed by the markdown renderer:
+`getMarkdownThemeVariables` returns the core variables consumed by the markdown renderer, including a foreground color with sufficient contrast for the primary accent:
 
 ```js
 import { getMarkdownThemeVariables } from "@hasm/color-patterns";
 
 const vars = getMarkdownThemeVariables("forest");
 // {
-//   "--main-color":           "#1e5b2b",
-//   "--text-color":           "#dff7e4",
-//   "--textbackground-color": "#102518"
+//   "--main-color":           "#276749",
+//   "--text-color":           "#f0fdf4",
+//   "--textbackground-color": "#0d1b13",
+//   "--theme-on-accent":      "#ffffff"
 // }
 ```
 
@@ -157,9 +159,9 @@ import { buildThemeClassCss } from "@hasm/color-patterns";
 
 const css = buildThemeClassCss(".MarkdownViewer");
 // Produces:
-// :root { --main-color: ...; --text-color: ...; --textbackground-color: ...; }
-// .MarkdownViewer.theme-classic { --main-color: #0a1561; ... }
-// .MarkdownViewer.theme-sunrise { --main-color: #8a2d0a; ... }
+// :root { --main-color: ...; --text-color: ...; --textbackground-color: ...; --theme-on-accent: ...; }
+// .MarkdownViewer.theme-classic { --main-color: #3157c8; ... }
+// .MarkdownViewer.theme-sunrise { --main-color: #c2410c; ... }
 // ... (one block per pattern)
 
 const styleEl = document.createElement("style");
@@ -182,8 +184,9 @@ import { getPatternById } from "@hasm/color-patterns";
 const pattern = getPatternById("royal");
 console.log(pattern.id);                   // "royal"
 console.log(pattern.label);               // "Royal"
-console.log(pattern.colors.mainColor);    // "#1e3a8a"
-console.log(pattern.colors.textColor);    // "#dbeafe"
+console.log(pattern.colors.mainColor);    // "#4338ca"
+console.log(pattern.colors.textColor);    // "#eef2ff"
+console.log(pattern.colors.onAccentColor); // "#ffffff"
 console.log(pattern.colors.successColor); // mixed hex
 console.log(pattern.colors.dangerColor);  // mixed hex
 ```
@@ -197,6 +200,7 @@ Every `pattern.colors` object contains:
 | Property | Description |
 |---|---|
 | `mainColor` | Primary brand / accent color |
+| `onAccentColor` | Automatically selected black or white text for the primary accent background |
 | `textColor` | Main readable text color |
 | `textBackgroundColor` | Background behind text content |
 | `secondaryColor` | Blended secondary accent (22 % toward textColor) |
