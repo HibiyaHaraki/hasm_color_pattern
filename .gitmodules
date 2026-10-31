@@ -1,0 +1,3 @@
+[submodule "hasm_logger"]
+	path = hasm_logger
+	url = git@github.com:HibiyaHaraki/hasm_logger.git

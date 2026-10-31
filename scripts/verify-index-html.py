@@ -6,6 +6,16 @@ import re
 import sys
 from pathlib import Path
 
+sys.path.insert(
+    0,
+    str(Path(__file__).resolve().parents[1] / "hasm_logger" / "src" / "python"),
+)
+
+from hasm_logger import setup_logger
+
+
+logger = setup_logger("hasm-color-patterns.verify-index-html")
+
 
 def load_parse_patterns(script_path: Path):
     spec = importlib.util.spec_from_file_location("generate_index_html", script_path)
@@ -47,23 +57,26 @@ def main() -> int:
     extra_ids = [pattern_id for pattern_id in embedded_ids if pattern_id not in source_ids]
 
     if missing_ids or extra_ids:
-        print("Pattern mismatch between src/patterns.js and index.html")
+        logger.error("Pattern mismatch between src/patterns.js and index.html")
         if missing_ids:
-            print(f"Missing in index.html: {', '.join(missing_ids)}")
+            logger.error("Missing in index.html: %s", ", ".join(missing_ids))
         if extra_ids:
-            print(f"Unexpected in index.html: {', '.join(str(i) for i in extra_ids)}")
+            logger.error("Unexpected in index.html: %s", ", ".join(str(i) for i in extra_ids))
         return 1
 
     if len(embedded_patterns) != len(source_patterns):
-        print(
+        logger.error(
             "Pattern count mismatch: "
-            f"src={len(source_patterns)} index={len(embedded_patterns)}"
+            "src=%d index=%d",
+            len(source_patterns),
+            len(embedded_patterns),
         )
         return 1
 
-    print(
+    logger.info(
         "index.html contains all available color patterns "
-        f"({len(source_patterns)} patterns)."
+        "(%d patterns).",
+        len(source_patterns),
     )
     return 0
 

@@ -3,7 +3,18 @@ from __future__ import annotations
 import argparse
 import json
 import re
+import sys
 from pathlib import Path
+
+sys.path.insert(
+    0,
+    str(Path(__file__).resolve().parents[1] / "hasm_logger" / "src" / "python"),
+)
+
+from hasm_logger import setup_logger
+
+
+logger = setup_logger("hasm-color-patterns.generate-index-html")
 
 
 def extract_object_blocks(js_source: str) -> list[str]:
@@ -426,7 +437,7 @@ def main() -> None:
     patterns = parse_patterns(args.patterns)
     html = build_html(patterns)
     args.output.write_text(html, encoding="utf-8")
-    print(f"Generated {args.output} from {args.patterns} ({len(patterns)} patterns).")
+    logger.info("Generated %s from %s (%d patterns).", args.output, args.patterns, len(patterns))
 
 
 if __name__ == "__main__":

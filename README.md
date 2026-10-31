@@ -28,6 +28,13 @@ npm install ../hasm_color_patterns
 
 If the submodule location differs, adjust the relative path.
 
+The repository's example and maintenance scripts use `hasm_logger`. Initialize
+the submodule after cloning this repository:
+
+```bash
+git submodule update --init --recursive
+```
+
 ---
 
 ## Exports
@@ -81,10 +88,12 @@ If the submodule location differs, adjust the relative path.
 ### 1. Get all patterns for a UI dropdown
 
 ```js
+import { createLogger } from "@hasm/logger/react";
 import { COLOR_PATTERN_OPTIONS } from "@hasm/color-patterns";
 
+const logger = createLogger("hasm-color-patterns");
 // [{ id: "classic", label: "Classic", markdownLabel: "Classic Blue" }, ...]
-console.log(COLOR_PATTERN_OPTIONS);
+logger.info(COLOR_PATTERN_OPTIONS);
 ```
 
 ### 2. Validate a user-supplied pattern id
@@ -179,16 +188,18 @@ rootEl.classList.add(`theme-${selectedPatternId}`);
 ### 6. Access raw color values from a pattern
 
 ```js
+import { createLogger } from "@hasm/logger/react";
 import { getPatternById } from "@hasm/color-patterns";
 
+const logger = createLogger("hasm-color-patterns");
 const pattern = getPatternById("royal");
-console.log(pattern.id);                   // "royal"
-console.log(pattern.label);               // "Royal"
-console.log(pattern.colors.mainColor);    // "#4338ca"
-console.log(pattern.colors.textColor);    // "#eef2ff"
-console.log(pattern.colors.onAccentColor); // "#ffffff"
-console.log(pattern.colors.successColor); // mixed hex
-console.log(pattern.colors.dangerColor);  // mixed hex
+logger.info(pattern.id);                   // "royal"
+logger.info(pattern.label);               // "Royal"
+logger.info(pattern.colors.mainColor);    // "#4338ca"
+logger.info(pattern.colors.textColor);    // "#eef2ff"
+logger.info(pattern.colors.onAccentColor); // "#ffffff"
+logger.info(pattern.colors.successColor); // mixed hex
+logger.info(pattern.colors.dangerColor);  // mixed hex
 ```
 
 ---
@@ -215,10 +226,8 @@ Every `pattern.colors` object contains:
 
 ---
 
-## Suggested local flow before submodule wiring
+## Suggested local flow
 
-1. Create remote repo for this folder.
-2. Commit and push this repository.
-3. Add as submodule in hasm.
-4. Add as submodule in hasm_markdown.
-5. In both apps, install local package from the submodule path.
+1. Initialize `hasm_logger` with `git submodule update --init --recursive`.
+2. Regenerate the standalone page with `python scripts/generate-index-html.py`.
+3. Verify it with `python scripts/verify-index-html.py`.
